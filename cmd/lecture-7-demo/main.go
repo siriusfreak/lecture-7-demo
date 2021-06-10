@@ -7,10 +7,13 @@ import (
 	"net/http"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"gitlab.com/siriusfreak/lecture-7-demo/common"
 	"gitlab.com/siriusfreak/lecture-7-demo/internal/api"
 	"gitlab.com/siriusfreak/lecture-7-demo/internal/ml_service"
 	"google.golang.org/grpc"
 
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	desc "gitlab.com/siriusfreak/lecture-7-demo/pkg/lecture-7-demo"
 )
 
@@ -63,10 +66,22 @@ func runMLService() {
 	}
 }
 
+func runMetrics() {
+
+	common.RegisterMetrics()
+	http.Handle("/metrics", promhttp.Handler())
+
+	err := http.ListenAndServe(":9100", nil)
+	if err != nil {
+		panic(err)
+	}
+}
 
 func main() {
 	go runJSON()
 	go runMLService()
+	go runMetrics()
+
 	if err := run(); err != nil {
 		log.Fatal(err)
 	}

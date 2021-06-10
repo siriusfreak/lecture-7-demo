@@ -36,6 +36,8 @@ func subscribe(topic string, consumer sarama.Consumer) error {
 }
 
 func messageReceived(message *sarama.ConsumerMessage) {
+	common.IncConsumedMessages()
+
 	fmt.Printf("Analyzing message: %s\n", string(message.Value))
 	var msg common.TextMessage
 	err := json.Unmarshal(message.Value, &msg)
