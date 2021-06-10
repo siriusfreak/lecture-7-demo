@@ -9,6 +9,8 @@ import (
 	"strconv"
 
 	"github.com/Shopify/sarama"
+	"github.com/opentracing/opentracing-go"
+	"github.com/opentracing/opentracing-go/ext"
 	"gitlab.com/siriusfreak/lecture-7-demo/common"
 )
 
@@ -36,6 +38,11 @@ func subscribe(topic string, consumer sarama.Consumer) error {
 }
 
 func messageReceived(message *sarama.ConsumerMessage) {
+	tracer := opentracing.GlobalTracer()
+
+	span := tracer.StartSpan("ConsumeMessage")
+	defer span.Finish()
+
 	common.IncConsumedMessages()
 
 	fmt.Printf("Analyzing message: %s\n", string(message.Value))
@@ -44,10 +51,18 @@ func messageReceived(message *sarama.ConsumerMessage) {
 	if err != nil {
 		fmt.Printf("Error unmarshalling message: %s\n", err)
 	}
+	span.SetTag("id", msg.ID)
 
 	result := rand.Int() % 2
 
-	resp, err := http.PostForm(msg.CallbackUrl,  url.Values{"id": {strconv.Itoa(int(msg.ID))}, "result": {strconv.Itoa(int(result))}})
+	req, _ := http.NewRequest("POST", msg.CallbackUrl, nil)
+	req.Form = url.Values{"id": {strconv.Itoa(int(msg.ID))}, "result": {strconv.Itoa(int(result))}}
+	ext.SpanKindRPCClient.Set(span)
+	ext.HTTPUrl.Set(span, msg.CallbackUrl)
+	ext.HTTPMethod.Set(span, "POST")
+
+	tracer.Inject(span.Context(), opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(req.Header))
+	resp, err := http.DefaultClient.Do(req)
 
 	if err != nil {
 		fmt.Printf("Error call callback: %v\n", err)
