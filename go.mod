@@ -10,10 +10,13 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/prometheus/client_golang v1.11.0
+	github.com/spf13/afero v1.6.0 // indirect
 	github.com/uber/jaeger-client-go v2.29.1+incompatible
 	github.com/uber/jaeger-lib v2.4.1+incompatible
+	github.com/yandex/pandora v0.3.2 // indirect
 	gitlab.com/siriusfreak/lecture-7-demo/pkg/lecture-7-demo v0.0.0-00010101000000-000000000000
 	go.uber.org/atomic v1.8.0 // indirect
+	go.uber.org/zap v1.17.0 // indirect
 	google.golang.org/genproto v0.0.0-20210608205507-b6d2f5bf0d7d
 	google.golang.org/grpc v1.38.0
 	google.golang.org/protobuf v1.26.0
