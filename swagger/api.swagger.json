@@ -1,0 +1,161 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/lecture-7-demo/lecture-7-demo.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/add": {
+      "post": {
+        "operationId": "Lecture7Demo_AddV1",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "Lecture7Demo"
+        ]
+      }
+    },
+    "/v1/callback_first": {
+      "post": {
+        "operationId": "Lecture7Demo_CallbackFirstV1",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "Lecture7Demo"
+        ]
+      }
+    },
+    "/v1/callback_second": {
+      "post": {
+        "operationId": "Lecture7Demo_CallbackSecondV1",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "Lecture7Demo"
+        ]
+      }
+    },
+    "/v1/status": {
+      "get": {
+        "operationId": "Lecture7Demo_StatusV1",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/lecture_7_demoStatusResponseV1"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "Lecture7Demo"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "StatusResponseV1Status": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "correct": {
+          "type": "boolean"
+        }
+      }
+    },
+    "lecture_7_demoStatusResponseV1": {
+      "type": "object",
+      "properties": {
+        "status_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StatusResponseV1Status"
+          }
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+package siriusfreak.lecture_7_demo;
+
+option go_package = "gitlab.com/siriusfreak/lecture-7-demo/pkg/lecture-7-demo;lecture_7_demo";
+
+service Lecture7Demo {
+
+  rpc AddV1(AddRequestV1) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/add"
+    };
+  }
+
+  rpc CallbackFirstV1(CallbackFirstV1Request) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/callback_first"
+    };
+  }
+
+  rpc CallbackSecondV1(CallbackSecondV1Request) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/callback_second"
+    };
+  }
+
+  rpc StatusV1(google.protobuf.Empty) returns (StatusResponseV1) {
+    option (google.api.http) = {
+      get: "/v1/status"
+    };
+  }
+
+}
+
+message AddRequestV1 {
+  int64 id = 1;
+  string text = 2;
+  bool result = 3;
+  string callback_url = 4;
+}
+
+message CallbackFirstV1Request {
+  int64 id = 1;
+  bool result = 2;
+}
+
+message CallbackSecondV1Request {
+  int64 id = 1;
+  bool result = 2;
+}
+
+message StatusResponseV1 {
+  message Status {
+    int64 id = 1;
+    bool correct = 2;
+  }
+  repeated Status status_list = 1;
+}
